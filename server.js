@@ -203,7 +203,15 @@ async function send(){
 app.get("/", (req,res)=>{
   res.send(html);
 });
+app.post("/mode", (req, res) => {
+  const mode = req.body.mode;
 
+  if (mode === "helpful" || mode === "cool" || mode === "aggressive") {
+    aiMode = mode;
+  }
+
+  res.json({ mode: aiMode });
+});
 app.post("/chat", async (req, res) => {
   try {
     const message = req.body.message;

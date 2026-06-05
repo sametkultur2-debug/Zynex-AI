@@ -236,7 +236,7 @@ Kurallar:
 - Kullanıcıyla sohbet eder gibi konuş
 - Asla "Size nasıl yardımcı olabilirim?" tarzı klişe cümleler kullanma
 `
-}
+},
           ...chatHistory
         ],
         temperature: 0.8

@@ -1,38 +1,56 @@
 const express = require("express");
-const OpenAI = require("openai");
+const axios = require("axios");
 
 const app = express();
 app.use(express.json());
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || ""
-});
+// Groq API key (Render ENV'den gelecek)
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 app.get("/", (req, res) => {
-  res.send("AI Server çalışıyor 🚀");
+  res.send("Groq AI Server çalışıyor 🚀");
 });
 
 app.post("/chat", async (req, res) => {
   try {
-    if (!process.env.OPENAI_API_KEY) {
-      return res.status(500).json({ error: "API key yok" });
-    }
-
     const message = req.body.message;
 
-    const response = await client.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: message }]
-    });
+    if (!GROQ_API_KEY) {
+      return res.status(500).json({
+        error: "GROQ API key yok (ENV kontrol et)"
+      });
+    }
+
+    const response = await axios.post(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
+        model: "llama3-8b-8192",
+        messages: [
+          {
+            role: "user",
+            content: message
+          }
+        ],
+        temperature: 0.7
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
 
     res.json({
-      reply: response.choices[0].message.content
+      reply: response.data.choices[0].message.content
     });
 
   } catch (error) {
-    console.log(error);
+    console.log("ERROR:", error.response?.data || error.message);
+
     res.status(500).json({
-      error: error.message
+      error: "Groq AI hata verdi",
+      detail: error.response?.data || error.message
     });
   }
 });
@@ -40,5 +58,5 @@ app.post("/chat", async (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log("AI Server çalışıyor");
+  console.log("Groq AI Server çalışıyor");
 });

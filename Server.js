@@ -2,21 +2,10 @@ const express = require("express");
 
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Zynex AI Server aktif 🚀");
-});
-
-app.listen(3000, () => {
-  console.log("Server çalışıyor");
-});
-
-const express = require("express");
-const app = express();
-
 app.use(express.json());
 
 app.get("/", (req, res) => {
-    res.send("AI API aktif 🚀");
+    res.send("Zynex AI Server aktif 🚀");
 });
 
 app.post("/chat", (req, res) => {

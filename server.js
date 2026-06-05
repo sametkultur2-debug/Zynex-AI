@@ -203,50 +203,61 @@ app.get("/", (req,res)=>{
   res.send(html);
 });
 
-app.post("/chat", async (req,res)=>{
+app.post("/chat", async (req, res) => {
   try {
     const message = req.body.message;
 
-    if(!GROQ_API_KEY){
+    if (!GROQ_API_KEY) {
       return res.status(500).json({
-        error:"API key yok"
+        error: "API key yok"
       });
     }
+
+    chatHistory.push({
+      role: "user",
+      content: message
+    });
 
     const response = await axios.post(
       "https://api.groq.com/openai/v1/chat/completions",
       {
         model: "llama-3.1-8b-instant",
         messages: [
-  {
-    role: "system",
-    content: "Sen Zynex AI adlı Türkçe konuşan bir yapay zekasın. Kullanıcıyla samimi, doğal ve akıcı Türkçe konuş. Gereksiz yere resmi konuşma. 'Size nasıl yardımcı olabilirim?' gibi kalıplaşmış ifadeleri sürekli kullanma."
-  },
-  {
-    role: "user",
-    content: message
-  }
+          {
+            role: "system",
+            content: "Sen Zynex AI adlı Türkçe konuşan bir yapay zekasın. Kullanıcıyla samimi, doğal ve akıcı Türkçe konuş. Gereksiz yere aşırı resmi olma."
+          },
+          ...chatHistory
         ],
-        temperature: 0.7
+        temperature: 0.8
       },
       {
-        headers:{
-          Authorization:`Bearer ${GROQ_API_KEY}`,
-          "Content-Type":"application/json"
+        headers: {
+          Authorization: `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
         }
       }
     );
 
-    res.json({
-      reply: response.data.choices[0].message.content
+    const reply = response.data.choices[0].message.content;
+
+    chatHistory.push({
+      role: "assistant",
+      content: reply
     });
+
+    // Çok büyümesin
+    if (chatHistory.length > 20) {
+      chatHistory.splice(0, chatHistory.length - 20);
+    }
+
+    res.json({ reply });
 
   } catch (err) {
     console.log(err.response?.data || err.message);
 
     res.status(500).json({
-      error:"AI hata verdi",
-      detail:err.response?.data || err.message
+      error: "AI hata verdi"
     });
   }
 });

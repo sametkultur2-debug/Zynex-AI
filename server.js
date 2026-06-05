@@ -7,51 +7,170 @@ app.use(express.json());
 // FRONTEND (HTML) BURADA
 const html = `
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
+<meta charset="UTF-8">
 <title>AI Chat</title>
 <style>
-body { font-family: Arial; background:#0f172a; color:white; display:flex; flex-direction:column; height:100vh; margin:0;}
-#chat { flex:1; padding:10px; overflow:auto;}
-.msg { margin:5px; padding:8px; border-radius:6px; }
-.user { background:#2563eb; text-align:right;}
-.bot { background:#1e293b;}
-input { width:80%; padding:10px;}
-button { padding:10px;}
+body{
+  margin:0;
+  font-family: Arial;
+  background:#0b1220;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+}
+
+/* HEADER */
+header{
+  padding:15px;
+  text-align:center;
+  background:#111a2e;
+  font-weight:bold;
+}
+
+/* CHAT AREA */
+#chat{
+  flex:1;
+  padding:15px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* MESSAGES */
+.msg{
+  max-width:75%;
+  padding:12px 14px;
+  border-radius:14px;
+  line-height:1.4;
+  word-wrap:break-word;
+  font-size:14px;
+}
+
+.user{
+  align-self:flex-end;
+  background:#2563eb;
+  border-bottom-right-radius:4px;
+}
+
+.bot{
+  align-self:flex-start;
+  background:#1f2937;
+  border-bottom-left-radius:4px;
+}
+
+/* INPUT AREA */
+.inputBox{
+  display:flex;
+  padding:10px;
+  background:#111a2e;
+  gap:10px;
+}
+
+input{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  outline:none;
+}
+
+button{
+  padding:12px 18px;
+  border:none;
+  border-radius:10px;
+  background:#22c55e;
+  color:white;
+  cursor:pointer;
+}
+
+/* LOADING DOTS */
+.typing{
+  display:inline-block;
+}
+
+.typing span{
+  width:6px;
+  height:6px;
+  margin:0 2px;
+  background:white;
+  display:inline-block;
+  border-radius:50%;
+  animation:blink 1.2s infinite;
+}
+
+.typing span:nth-child(2){ animation-delay:0.2s;}
+.typing span:nth-child(3){ animation-delay:0.4s;}
+
+@keyframes blink{
+  0%,80%,100%{ opacity:0.2;}
+  40%{ opacity:1;}
+}
 </style>
 </head>
+
 <body>
+
+<header>🤖 Zynex AI Chat</header>
 
 <div id="chat"></div>
 
-<div>
-<input id="msg" placeholder="Mesaj yaz..."/>
+<div class="inputBox">
+<input id="msg" placeholder="Mesaj yaz..." />
 <button onclick="send()">Gönder</button>
 </div>
 
 <script>
+
+function addMessage(text,type){
+  const div=document.createElement("div");
+  div.className="msg "+type;
+  div.innerText=text;
+  document.getElementById("chat").appendChild(div);
+  document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+}
+
+function addTyping(){
+  const div=document.createElement("div");
+  div.className="msg bot";
+  div.id="typing";
+  div.innerHTML=\`
+    <div class="typing">
+      <span></span><span></span><span></span>
+    </div>\`;
+  document.getElementById("chat").appendChild(div);
+}
+
+function removeTyping(){
+  const t=document.getElementById("typing");
+  if(t) t.remove();
+}
+
 async function send(){
-  const msg = document.getElementById('msg').value;
-  if(!msg) return;
+  const input=document.getElementById("msg");
+  const text=input.value;
+  if(!text) return;
 
-  add(msg,'user');
+  addMessage(text,"user");
+  input.value="";
 
-  const res = await fetch('/chat',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({message:msg})
+  addTyping();
+
+  const res=await fetch("/chat",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({message:text})
   });
 
-  const data = await res.json();
-  add(data.reply,'bot');
+  const data=await res.json();
+
+  removeTyping();
+  addMessage(data.reply,"bot");
 }
 
-function add(text,type){
-  const div=document.createElement('div');
-  div.className='msg '+type;
-  div.innerText=text;
-  document.getElementById('chat').appendChild(div);
-}
 </script>
 
 </body>

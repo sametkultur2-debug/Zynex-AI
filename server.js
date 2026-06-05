@@ -1,19 +1,8 @@
 const express = require("express");
-
 const app = express();
 
-app.use(express.json());
-
 app.get("/", (req, res) => {
-    res.send("Zynex AI Server aktif 🚀");
-});
-
-app.post("/chat", (req, res) => {
-    const message = req.body.message;
-
-    res.json({
-        reply: "Sen dedin: " + message
-    });
+    res.send("Server çalışıyor 🚀");
 });
 
 const PORT = process.env.PORT || 3000;

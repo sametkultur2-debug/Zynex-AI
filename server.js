@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY || ""
 });
 
 app.get("/", (req, res) => {
@@ -14,13 +14,15 @@ app.get("/", (req, res) => {
 
 app.post("/chat", async (req, res) => {
   try {
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(500).json({ error: "API key yok" });
+    }
+
     const message = req.body.message;
 
     const response = await client.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [
-        { role: "user", content: message }
-      ]
+      messages: [{ role: "user", content: message }]
     });
 
     res.json({
@@ -28,9 +30,15 @@ app.post("/chat", async (req, res) => {
     });
 
   } catch (error) {
-    console.log("FULL ERROR:", error); // 👈 KRİTİK
+    console.log(error);
     res.status(500).json({
-      error: error.message // 👈 gerçek hata artık görünecek
+      error: error.message
     });
   }
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log("AI Server çalışıyor");
 });

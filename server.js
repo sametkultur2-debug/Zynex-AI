@@ -1,5 +1,4 @@
 const chatHistory = [];
-const chatHistory = [];
 const express = require("express");
 const axios = require("axios");
 
@@ -225,9 +224,19 @@ app.post("/chat", async (req, res) => {
         model: "llama-3.1-8b-instant",
         messages: [
           {
-            role: "system",
-            content: "Sen Zynex AI adlı Türkçe konuşan bir yapay zekasın. Kullanıcıyla samimi, doğal ve akıcı Türkçe konuş. Gereksiz yere aşırı resmi olma."
-          },
+  role: "system",
+  content: `
+Sen Zynex AI'sın.
+
+Kurallar:
+- Türkçe konuş
+- Samimi ve doğal ol
+- Kısa ve net cevap ver
+- Gereksiz resmi ifadeler kullanma
+- Kullanıcıyla sohbet eder gibi konuş
+- Asla "Size nasıl yardımcı olabilirim?" tarzı klişe cümleler kullanma
+`
+}
           ...chatHistory
         ],
         temperature: 0.8

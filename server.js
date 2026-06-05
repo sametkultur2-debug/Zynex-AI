@@ -217,7 +217,14 @@ app.post("/chat", async (req,res)=>{
       {
         model: "llama-3.1-8b-instant",
         messages: [
-          { role:"user", content: message }
+  {
+    role: "system",
+    content: "Sen Zynex AI adlı Türkçe konuşan bir yapay zekasın. Kullanıcıyla samimi, doğal ve akıcı Türkçe konuş. Gereksiz yere resmi konuşma. 'Size nasıl yardımcı olabilirim?' gibi kalıplaşmış ifadeleri sürekli kullanma."
+  },
+  {
+    role: "user",
+    content: message
+  }
         ],
         temperature: 0.7
       },

@@ -233,25 +233,40 @@ if (chatHistory.length > 20) {
       "https://api.groq.com/openai/v1/chat/completions",
       {
         model: "llama-3.1-8b-instant",
-  messages: [
-  {
-    role: "system",
-    content: "..."
-  }
-]
-        let systemPrompt = "";
+ let systemPrompt = "";
 
 if (aiMode === "helpful") {
-  systemPrompt = "Sen yardımcı, samimi bir AI’sın.";
+  systemPrompt = `
+Sen Zynex AI'sın.
+Türkçe konuş.
+Samimi ve yardımcı ol.
+Kısa cevap ver.
+`;
 }
 
 if (aiMode === "cool") {
-  systemPrompt = "Sen cool, rahat konuşan bir AI’sın.";
+  systemPrompt = `
+Sen Zynex AI'sın.
+Cool ve rahat konuş.
+Havalı cevaplar ver.
+`;
 }
 
 if (aiMode === "aggressive") {
-  systemPrompt = "Sen sert ve direkt konuşan bir AI’sın.";
+  systemPrompt = `
+Sen Zynex AI'sın.
+Sert ve direkt konuş.
+Yumuşatma yapma.
+`;
 }
+
+messages: [
+  {
+    role: "system",
+    content: systemPrompt
+  },
+  ...chatHistory
+]
 Sen Zynex AI'sın.
 
 Kurallar:

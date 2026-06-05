@@ -110,6 +110,23 @@ button{
   40%{ opacity:1;}
 }
 </style>
+.typing span{
+  width:6px;
+  height:6px;
+  margin:0 2px;
+  background:white;
+  display:inline-block;
+  border-radius:50%;
+  animation:blink 1.2s infinite;
+}
+
+.typing span:nth-child(2){ animation-delay:0.2s; }
+.typing span:nth-child(3){ animation-delay:0.4s; }
+
+@keyframes blink{
+  0%,80%,100%{ opacity:0.2; }
+  40%{ opacity:1; }
+}
 </head>
 
 <body>

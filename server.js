@@ -1,3 +1,4 @@
+let aiMode = "helpful";
 const chatHistory = [];
 const express = require("express");
 const axios = require("axios");

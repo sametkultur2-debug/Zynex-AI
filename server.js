@@ -144,10 +144,11 @@ function addTyping(){
   const div=document.createElement("div");
   div.className="msg bot";
   div.id="typing";
-  div.innerHTML=`
-    <div class="typing">
-      <span></span><span></span><span></span>
-    </div>`;
+  div.innerHTML =
+    '<div class="typing">' +
+    '<span></span><span></span><span></span>' +
+    '</div>';
+
   document.getElementById("chat").appendChild(div);
   scroll();
 }

@@ -3,7 +3,9 @@ const axios = require("axios");
 
 const app = express();
 app.use(express.json());
-
+app.get("/", (req, res) => {
+  res.send("Zynex AI çalışıyor 🚀 API aktif");
+});
 // ====================== CONFIG ======================
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
 

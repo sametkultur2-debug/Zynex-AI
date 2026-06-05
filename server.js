@@ -217,7 +217,9 @@ app.post("/chat", async (req, res) => {
       role: "user",
       content: message
     });
-
+if (chatHistory.length > 20) {
+  chatHistory.splice(0, chatHistory.length - 20);
+}
     const response = await axios.post(
       "https://api.groq.com/openai/v1/chat/completions",
       {

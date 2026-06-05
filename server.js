@@ -124,7 +124,12 @@ button{
 </div>
 
 <script>
-
+document.getElementById("msg").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    send();
+  }
+});
 function addMessage(text,type){
   const div=document.createElement("div");
   div.className="msg "+type;

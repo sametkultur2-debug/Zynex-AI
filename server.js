@@ -1,4 +1,5 @@
 const chatHistory = [];
+const chatHistory = [];
 const express = require("express");
 const axios = require("axios");
 

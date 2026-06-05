@@ -233,10 +233,26 @@ if (chatHistory.length > 20) {
       "https://api.groq.com/openai/v1/chat/completions",
       {
         model: "llama-3.1-8b-instant",
-        messages: [
-          {
-  role: "system",
-  content: `
+       messages: [
+  {
+    role: "system",
+    content: systemPrompt
+  },
+  ...chatHistory
+]
+        let systemPrompt = "";
+
+if (aiMode === "helpful") {
+  systemPrompt = "Sen yardımcı, samimi bir AI’sın.";
+}
+
+if (aiMode === "cool") {
+  systemPrompt = "Sen cool, rahat konuşan bir AI’sın.";
+}
+
+if (aiMode === "aggressive") {
+  systemPrompt = "Sen sert ve direkt konuşan bir AI’sın.";
+}
 Sen Zynex AI'sın.
 
 Kurallar:

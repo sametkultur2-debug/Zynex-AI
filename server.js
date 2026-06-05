@@ -123,7 +123,7 @@ button{
 <button onclick="send()">Gönder</button>
 </div>
 
-<script>
+<script>  
 document.getElementById("msg").addEventListener("keydown", function(event) {
   if (event.key === "Enter") {
     event.preventDefault();
@@ -137,7 +137,28 @@ function addMessage(text,type){
   document.getElementById("chat").appendChild(div);
   document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
 }
+function addTyping() {
+  const div = document.createElement("div");
+  div.className = "msg bot";
+  div.id = "typing";
+  div.innerHTML = `
+    <div class="typing">
+      <span></span><span></span><span></span>
+    </div>
+  `;
+  document.getElementById("chat").appendChild(div);
+  scrollDown();
+}
 
+function removeTyping() {
+  const t = document.getElementById("typing");
+  if (t) t.remove();
+}
+
+function scrollDown() {
+  const chat = document.getElementById("chat");
+  chat.scrollTop = chat.scrollHeight;
+}
 function addTyping(){
   const div=document.createElement("div");
   div.className="msg bot";

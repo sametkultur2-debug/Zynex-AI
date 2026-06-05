@@ -251,7 +251,9 @@ Kurallar:
       }
     );
 
-    const reply = response.data.choices[0].message.content;
+    const reply =
+  response?.data?.choices?.[0]?.message?.content ||
+  "Şu an cevap veremiyorum.";
 
     chatHistory.push({
       role: "assistant",

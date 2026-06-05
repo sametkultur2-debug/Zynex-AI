@@ -235,6 +235,8 @@ if (chatHistory.length > 20) {
         model: "llama-3.1-8b-instant",
  let systemPrompt = "";
 
+let systemPrompt = "";
+
 if (aiMode === "helpful") {
   systemPrompt = `
 Sen Zynex AI'sın.
@@ -267,17 +269,6 @@ messages: [
   },
   ...chatHistory
 ]
-Sen Zynex AI'sın.
-
-Kurallar:
-- Türkçe konuş
-- Samimi ve doğal ol
-- Kısa ve net cevap ver
-- Gereksiz resmi ifadeler kullanma
-- Kullanıcıyla sohbet eder gibi konuş
-- Asla "Size nasıl yardımcı olabilirim?" tarzı klişe cümleler kullanma
-`
-},
           ...chatHistory
         ],
         temperature: 0.8

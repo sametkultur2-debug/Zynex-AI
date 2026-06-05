@@ -17,7 +17,7 @@ app.post("/chat", async (req, res) => {
     const message = req.body.message;
 
     const response = await client.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "gpt-3.5-turbo",
       messages: [
         { role: "user", content: message }
       ]
@@ -27,15 +27,10 @@ app.post("/chat", async (req, res) => {
       reply: response.choices[0].message.content
     });
 
-  } catch (err) {
+  } catch (error) {
+    console.log("FULL ERROR:", error); // 👈 KRİTİK
     res.status(500).json({
-      error: "AI hata verdi"
+      error: error.message // 👈 gerçek hata artık görünecek
     });
   }
-});
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, () => {
-  console.log("AI Server çalışıyor");
 });
